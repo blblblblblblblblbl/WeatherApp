@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication
+package com.blblblbl.myapplication.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -6,9 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,18 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.blblblbl.myapplication.data.DBForecast
+import com.blblblbl.myapplication.ui.compose.theming.CustomTheme
 import com.blblblbl.myapplication.viewmodels.WeatherViewModel
-import com.example.example.Forecast
 import com.example.example.Forecastday
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class WeatherFragment : Fragment() {
@@ -50,7 +44,9 @@ class WeatherFragment : Fragment() {
         } }
         return ComposeView(requireContext()).apply {
             setContent {
-                ForecastsList()
+                CustomTheme {
+                    ForecastsList()
+                }
             }
         }
     }

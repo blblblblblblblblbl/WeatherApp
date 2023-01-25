@@ -2,6 +2,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()  // Maven Central repository
+        maven {url 'https://jitpack.io'}
     }
     dependencies {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.5.2"
@@ -108,6 +109,9 @@ dependencies {
     //
     //weather forecast
     //implementation 'org.renci.io.swagger:swagger-java-comet-client:1.0.0'
+    //
+    //flags
+    implementation 'com.github.murgupluoglu:flagkit-android:1.0.2'
     //
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PersistantStorage @Inject constructor(
+class PersistentStorage @Inject constructor(
     @ApplicationContext context: Context
 ) {
 
@@ -37,5 +37,6 @@ class PersistantStorage @Inject constructor(
     companion object{
         const val STORAGE_NAME = "StorageName"
         const val LAST_SEARCH = "lastsearch"
+        const val LANGUAGE_CODE = "LANGUAGE_CODE"
     }
 }

@@ -26,6 +26,10 @@ class ApiRepository @Inject constructor() {
         interface ForecastApi{
             @GET("forecast.json")
             suspend fun getForecast(@Query("key") key:String, @Query("q") q:String, @Query("days") days:Int, @Query("aqi") aqi:String, @Query("alerts") alerts:String): ForecastResponse
+
+            @GET("current.json")
+            suspend fun getCurrent(@Query("key") key:String, @Query("q") q:String, @Query("aqi") aqi:String): ForecastResponse
+
         }
 
     }
@@ -33,6 +37,11 @@ class ApiRepository @Inject constructor() {
 
     suspend fun getForecast(city:String,days: Int):ForecastResponse {
         val response = RetrofitServices.forecastApi.getForecast(API_KEY,city,days,"no","no")
+        Log.d("MyLog","weather response:$response")
+        return response
+    }
+    suspend fun getCurrent(loc:String):ForecastResponse{
+        val response = RetrofitServices.forecastApi.getCurrent(API_KEY,loc,"no")
         Log.d("MyLog","weather response:$response")
         return response
     }

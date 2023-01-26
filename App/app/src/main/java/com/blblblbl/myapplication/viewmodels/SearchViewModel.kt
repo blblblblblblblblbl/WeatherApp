@@ -2,6 +2,7 @@ package com.blblblbl.myapplication.viewmodels
 
 import android.content.Context
 import android.location.Location
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.blblblbl.myapplication.data.DBForecast
 import com.blblblbl.myapplication.domain.*
+import com.example.example.ForecastResponse
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,11 +23,14 @@ class SearchViewModel @Inject constructor(
     private val getForecastUseCase: GetForecastUseCase,
     private val lastSearchUseCase: LastSearchUseCase,
     private val changeLocaleUseCase: ChangeLocaleUseCase,
-    private val getLocationUseCase: GetLocationUseCase
+    private val getLocationUseCase: GetLocationUseCase,
+    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase
 ):ViewModel() {
     val ph = PermissionHandler()
     private val _location = MutableStateFlow<Location?>(null)
     val location = _location.asStateFlow()
+    private val _weather = MutableStateFlow<ForecastResponse?>(null)
+    val weather = _weather.asStateFlow()
     suspend fun getForecast(city:String,days:Int):DBForecast?{
         return getForecastUseCase.execute(city.trim(),days)
     }
@@ -53,6 +58,14 @@ class SearchViewModel @Inject constructor(
             getLocationUseCase.getLocation(context,ph,_location)
         }
     }
+    fun getCurrentWeather(){
+        viewModelScope.launch {
+            location.value?.let { location ->
+                _weather.value = getCurrentWeatherUseCase.getCurrentWeather("${location.latitude.toString()},${location.longitude.toString()}")
+                Log.d("MyLog","current weather:${weather.value}")
+            }
 
+        }
+    }
 
 }

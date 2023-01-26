@@ -17,14 +17,19 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.data.DBForecast
@@ -32,7 +37,9 @@ import com.blblblbl.myapplication.data.PersistentStorage
 import com.blblblbl.myapplication.ui.compose.theming.CustomTheme
 import com.blblblbl.myapplication.viewmodels.SearchViewModel
 import com.murgupluoglu.flagkit.FlagKit
+import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
@@ -77,18 +84,35 @@ class SearchFragment : Fragment() {
                             modifier = Modifier.fillMaxWidth(),
                             shape = MaterialTheme.shapes.large
                         )
-                        IconButton(onClick = {
-                            viewModel.getLocation(requireContext())
-                        }) {
-                            Icon(Icons.Default.MyLocation, contentDescription = "location")
-                        }
-                        val loc = viewModel.location.collectAsState()
-                        Text(text = loc.value.toString())
-                        IconButton(onClick = { viewModel.getCurrentWeather() }) {
+                        val weather = viewModel.weather.collectAsState()
+                        lifecycleScope.launchWhenCreated { viewModel.location.collectLatest {
+                            viewModel.getCurrentWeather()
+                        }}
+                        IconButton(onClick = { viewModel.getLocation(requireContext()) }) {
                             Icon(Icons.Default.Refresh, contentDescription = "refresh")
                         }
-                        val weather = viewModel.weather.collectAsState()
-                        Text(text = weather.value.toString())
+                        weather.value?.location?.name?.let { name->
+                            Text(text = name, modifier = Modifier.align(CenterHorizontally), style = MaterialTheme.typography.headlineLarge)
+                        }
+                        weather.value?.current?.tempC?.let { temp->
+                            Text(text = "$temp°C",
+                                modifier = Modifier.align(CenterHorizontally),
+                                style = MaterialTheme.typography.headlineLarge,
+                                fontSize = 50.sp)
+                        }
+                        weather.value?.current?.condition?.text?.let{condition->
+                            Text(text = condition,modifier = Modifier.align(CenterHorizontally), style = MaterialTheme.typography.bodyLarge)
+                        }
+                        weather.value?.current?.condition?.icon?.let{conditionIcon->
+                            GlideImage(modifier = Modifier
+                                .align(CenterHorizontally)
+                                .size(64.dp),imageModel = {"https:$conditionIcon"})
+                        }
+                        weather.value?.current?.lastUpdated?.let{lastUpdated->
+                            Text(text = "${stringResource(id = R.string.last_updated)}: $lastUpdated",
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.align(CenterHorizontally) )
+                        }
                         Spacer(modifier = Modifier.weight(1f))
                         Row() {
                             Spacer(modifier = Modifier.weight(1f))

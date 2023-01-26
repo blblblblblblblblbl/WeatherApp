@@ -38,7 +38,6 @@ class SearchViewModel @Inject constructor(
         return lastSearchUseCase.get(name)
     }
     fun setLastSearch(name:String,value:String){
-
         lastSearchUseCase.set(name,value)
     }
     fun setLocale(activity: FragmentActivity,locale: String){

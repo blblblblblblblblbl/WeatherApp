@@ -11,6 +11,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -19,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -42,6 +45,7 @@ class SearchFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 CustomTheme {
+                    viewModel.ph.handlePermission()
                     var textHint:String =viewModel.getLastSearch(PersistentStorage.LAST_SEARCH)?:""
                     Column {
                         var text by remember { mutableStateOf("") }
@@ -72,6 +76,13 @@ class SearchFragment : Fragment() {
                             modifier = Modifier.fillMaxWidth(),
                             shape = MaterialTheme.shapes.large
                         )
+                        IconButton(onClick = {
+                            viewModel.getLocation(requireContext())
+                        }) {
+                            Icon(Icons.Default.MyLocation, contentDescription = "location")
+                        }
+                        val loc = viewModel.location.collectAsState()
+                        Text(text = loc.value.toString())
                         Spacer(modifier = Modifier.weight(1f))
                         Row() {
                             Spacer(modifier = Modifier.weight(1f))
@@ -91,6 +102,12 @@ class SearchFragment : Fragment() {
                 }
             }
         }
+    }
+    @Preview
+    @Composable
+    fun locationIcon(){
+        Icon(Icons.Default.MyLocation, contentDescription = "location")
+
     }
     private fun search(city:String, days:Int){
         val dbForecast:DBForecast?

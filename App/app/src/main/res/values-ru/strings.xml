@@ -5,4 +5,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fragment_search_title">поиск</string>
     <string name="fragment_cities_title">города</string>
+    <string name="last_updated">последнее обновление</string>
 </resources>

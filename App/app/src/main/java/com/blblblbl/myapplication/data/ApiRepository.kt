@@ -11,7 +11,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ApiRepository @Inject constructor() {
+class ApiRepository @Inject constructor(
+    private val persistentStorage: PersistentStorage
+) {
     object RetrofitServices{
         private const val BASE_URL= "https://api.weatherapi.com/v1/"
         private val gson = GsonBuilder().setLenient().create()
@@ -28,7 +30,7 @@ class ApiRepository @Inject constructor() {
             suspend fun getForecast(@Query("key") key:String, @Query("q") q:String, @Query("days") days:Int, @Query("aqi") aqi:String, @Query("alerts") alerts:String): ForecastResponse
 
             @GET("current.json")
-            suspend fun getCurrent(@Query("key") key:String, @Query("q") q:String, @Query("aqi") aqi:String): ForecastResponse
+            suspend fun getCurrent(@Query("key") key:String, @Query("q") q:String, @Query("aqi") aqi:String,@Query("lang") lang:String="DEFAULT_LANGUAGE"): ForecastResponse
 
         }
 
@@ -41,11 +43,13 @@ class ApiRepository @Inject constructor() {
         return response
     }
     suspend fun getCurrent(loc:String):ForecastResponse{
-        val response = RetrofitServices.forecastApi.getCurrent(API_KEY,loc,"no")
+        val lang = persistentStorage.getProperty(PersistentStorage.LANGUAGE_CODE)?:"DEFAULT_LANGUAGE"
+        val response = RetrofitServices.forecastApi.getCurrent(API_KEY,loc,"no",lang)
         Log.d("MyLog","weather response:$response")
         return response
     }
     companion object{
+        const val DEFAULT_LANGUAGE = "en"
         const val API_KEY = "5f6574d1b7f94bd99d042815232501"
     }
 }

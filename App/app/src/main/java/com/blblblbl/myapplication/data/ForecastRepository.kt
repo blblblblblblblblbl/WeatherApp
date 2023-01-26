@@ -37,7 +37,9 @@ class ForecastRepository @Inject constructor(
         val forecastFromDB = getForecastSaved(city)
         return forecastFromDB?:null
     }
-
+    suspend fun getCurrent(loc:String):ForecastResponse{
+        return apiRepository.getCurrent(loc)
+    }
     fun getForecastsSavedList(): List<DBForecast> {
 
         return databaseRepository.db.forecastDao().getAll()

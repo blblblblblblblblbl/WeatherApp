@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -83,6 +84,11 @@ class SearchFragment : Fragment() {
                         }
                         val loc = viewModel.location.collectAsState()
                         Text(text = loc.value.toString())
+                        IconButton(onClick = { viewModel.getCurrentWeather() }) {
+                            Icon(Icons.Default.Refresh, contentDescription = "refresh")
+                        }
+                        val weather = viewModel.weather.collectAsState()
+                        Text(text = weather.value.toString())
                         Spacer(modifier = Modifier.weight(1f))
                         Row() {
                             Spacer(modifier = Modifier.weight(1f))

@@ -1,14 +1,18 @@
 package com.blblblbl.myapplication.viewmodels
 
 import android.content.Context
+import android.location.Location
+import androidx.compose.runtime.mutableStateOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.blblblbl.myapplication.data.DBForecast
-import com.blblblbl.myapplication.domain.ChangeLocaleUseCase
-import com.blblblbl.myapplication.domain.GetForecastUseCase
-import com.blblblbl.myapplication.domain.LastSearchUseCase
+import com.blblblbl.myapplication.domain.*
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,8 +20,12 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val getForecastUseCase: GetForecastUseCase,
     private val lastSearchUseCase: LastSearchUseCase,
-    private val changeLocaleUseCase: ChangeLocaleUseCase
+    private val changeLocaleUseCase: ChangeLocaleUseCase,
+    private val getLocationUseCase: GetLocationUseCase
 ):ViewModel() {
+    val ph = PermissionHandler()
+    private val _location = MutableStateFlow<Location?>(null)
+    val location = _location.asStateFlow()
     suspend fun getForecast(city:String,days:Int):DBForecast?{
         return getForecastUseCase.execute(city.trim(),days)
     }
@@ -34,10 +42,17 @@ class SearchViewModel @Inject constructor(
             activity.recreate()
         }
     }
-    fun saveLocale(locale:String){
+    private fun saveLocale(locale:String){
         changeLocaleUseCase.saveLocale(locale)
     }
-    fun getLocale():String{
+    private fun getLocale():String{
         return changeLocaleUseCase.getLocale()?:"en"
     }
+    fun getLocation(context: Context){
+        viewModelScope.launch {
+            getLocationUseCase.getLocation(context,ph,_location)
+        }
+    }
+
+
 }

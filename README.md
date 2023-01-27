@@ -28,7 +28,5 @@ This app is in development now
 
 ## Screenshots
 
-![App Screenshot](https://user-images.githubusercontent.com/99303918/215072729-270d02f5-a615-4698-b455-fb54591dadfb.jpg)
-![app_screenshot](https://user-images.githubusercontent.com/99303918/215072911-c6270df8-bf39-4742-bd66-a7b57855d9f0.jpg)
-<img src="https://user-images.githubusercontent.com/99303918/215072729-270d02f5-a615-4698-b455-fb54591dadfb.jpg" width = 100>
+<img src="https://user-images.githubusercontent.com/99303918/215072911-c6270df8-bf39-4742-bd66-a7b57855d9f0.jpg" width = 200> <img src="https://user-images.githubusercontent.com/99303918/215072729-270d02f5-a615-4698-b455-fb54591dadfb.jpg" width = 200>
 

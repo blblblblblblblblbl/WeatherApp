@@ -24,7 +24,9 @@ class SearchViewModel @Inject constructor(
     private val lastSearchUseCase: LastSearchUseCase,
     private val changeLocaleUseCase: ChangeLocaleUseCase,
     private val getLocationUseCase: GetLocationUseCase,
-    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase
+    private val getCurrentWeatherUseCase: GetCurrentWeatherUseCase,
+    private val saveCurrentWeatherUseCase: SaveCurrentWeatherUseCase
+
 ):ViewModel() {
     val ph = PermissionHandler()
     private val _location = MutableStateFlow<Location?>(null)
@@ -46,6 +48,12 @@ class SearchViewModel @Inject constructor(
             activity.recreate()
         }
     }
+    fun saveCurrentWeather(){
+        viewModelScope.launch {
+            _weather.value?.let { forecast->
+                saveCurrentWeatherUseCase.saveCurrentWeather(forecast) }
+        }
+    }
     private fun saveLocale(locale:String){
         changeLocaleUseCase.saveLocale(locale)
     }
@@ -57,11 +65,17 @@ class SearchViewModel @Inject constructor(
             getLocationUseCase.getLocation(context,ph,_location)
         }
     }
+    fun getCurrentSaved(){
+        viewModelScope.launch{
+            _weather.value = getCurrentWeatherUseCase.getSaved()
+        }
+    }
     fun getCurrentWeather(){
         viewModelScope.launch {
             location.value?.let { location ->
                 _weather.value = getCurrentWeatherUseCase.getCurrentWeather("${location.latitude.toString()},${location.longitude.toString()}")
                 Log.d("MyLog","current weather:${weather.value}")
+                saveCurrentWeather()
             }
 
         }

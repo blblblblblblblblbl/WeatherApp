@@ -11,4 +11,5 @@ class GetForecastUseCase @Inject constructor(
     suspend fun execute(city:String,days:Int):DBForecast?{
        return forecastRepository.getForecast(city,days)
     }
+
 }

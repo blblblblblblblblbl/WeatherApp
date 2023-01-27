@@ -2,9 +2,7 @@ package com.blblblbl.myapplication.viewmodels
 
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Build
 import androidx.lifecycle.ViewModel
-import com.blblblbl.myapplication.data.PersistentStorage
 import com.blblblbl.myapplication.domain.ChangeLocaleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.*

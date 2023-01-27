@@ -1,13 +1,8 @@
 package com.blblblbl.myapplication.domain
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.content.res.Configuration
-import android.content.res.Resources
-import android.os.Build
-import com.blblblbl.myapplication.data.PersistentStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.util.*
 import javax.inject.Inject
 
 

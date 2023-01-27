@@ -1,26 +1,23 @@
 package com.blblblbl.myapplication.ui.fragments
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,19 +25,25 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.blblblbl.myapplication.MyApp
 import com.blblblbl.myapplication.R
+import com.blblblbl.myapplication.WeatherWidget
 import com.blblblbl.myapplication.data.DBForecast
-import com.blblblbl.myapplication.data.PersistentStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.ui.compose.theming.CustomTheme
 import com.blblblbl.myapplication.viewmodels.SearchViewModel
 import com.murgupluoglu.flagkit.FlagKit
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.internal.Contexts
+import dagger.hilt.android.internal.Contexts.getApplication
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
+
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -50,6 +53,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.getCurrentSaved()
         return ComposeView(requireContext()).apply {
             setContent {
                 CustomTheme {
@@ -87,6 +91,13 @@ class SearchFragment : Fragment() {
                         val weather = viewModel.weather.collectAsState()
                         lifecycleScope.launchWhenCreated { viewModel.location.collectLatest {
                             viewModel.getCurrentWeather()
+                            val intent = Intent(requireActivity(), WeatherWidget::class.java)
+                            intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                            val ids: IntArray = AppWidgetManager
+                                .getInstance(requireActivity().application)
+                                .getAppWidgetIds(ComponentName(requireActivity().application, WeatherWidget::class.java))
+                            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+                            requireActivity().sendBroadcast(intent)
                         }}
                         IconButton(onClick = { viewModel.getLocation(requireContext()) }) {
                             Icon(Icons.Default.Refresh, contentDescription = "refresh")

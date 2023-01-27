@@ -1,6 +1,7 @@
 package com.blblblbl.myapplication.data
 
 import android.util.Log
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.example.example.ForecastResponse
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
@@ -38,11 +39,13 @@ class ApiRepository @Inject constructor(
 
 
     suspend fun getForecast(city:String,days: Int):ForecastResponse {
+        Log.d("MyLog","weather request")
         val response = RetrofitServices.forecastApi.getForecast(API_KEY,city,days,"no","no")
         Log.d("MyLog","weather response:$response")
         return response
     }
     suspend fun getCurrent(loc:String):ForecastResponse{
+        Log.d("MyLog","weather request")
         val lang = persistentStorage.getProperty(PersistentStorage.LANGUAGE_CODE)?:"DEFAULT_LANGUAGE"
         val response = RetrofitServices.forecastApi.getCurrent(API_KEY,loc,"no",lang)
         Log.d("MyLog","weather response:$response")

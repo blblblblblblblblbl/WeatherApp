@@ -1,6 +1,8 @@
 package com.blblblbl.myapplication.data
 
 import android.util.Log
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
+import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
 import com.example.example.Forecast
 
 import com.example.example.ForecastResponse
@@ -18,7 +20,8 @@ import javax.inject.Singleton
 @Singleton
 class ForecastRepository @Inject constructor(
     private val apiRepository: ApiRepository,
-    private val databaseRepository: DatabaseRepository
+    private val databaseRepository: DatabaseRepository,
+    private val persistentStorage: PersistentStorage
 ) {
 
     suspend fun getForecast(city:String,days: Int):DBForecast? {
@@ -39,6 +42,18 @@ class ForecastRepository @Inject constructor(
     }
     suspend fun getCurrent(loc:String):ForecastResponse{
         return apiRepository.getCurrent(loc)
+    }
+    suspend fun getCurrentSaved():ForecastResponse?{
+        val json = persistentStorage.getProperty(PersistentStorage.CURRENT_WEATHER)
+        json?.let {json->
+            val forecast = StorageConverter.forecastInfoFromJson(json)
+            return forecast
+        }
+        return null
+    }
+    suspend fun saveCurrent(forecastResponse: ForecastResponse){
+        val json = StorageConverter.forecastInfoToJson(forecastResponse)
+        persistentStorage.addProperty(PersistentStorage.CURRENT_WEATHER,json)
     }
     fun getForecastsSavedList(): List<DBForecast> {
 

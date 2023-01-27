@@ -1,6 +1,6 @@
 package com.blblblbl.myapplication.domain
 
-import com.blblblbl.myapplication.data.PersistentStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import javax.inject.Inject
 
 class LastSearchUseCase @Inject constructor(

@@ -10,4 +10,7 @@ class GetCurrentWeatherUseCase @Inject constructor(
     suspend fun getCurrentWeather(loc:String):ForecastResponse{
         return repository.getCurrent(loc)
     }
+    suspend fun getSaved():ForecastResponse?{
+        return repository.getCurrentSaved()
+    }
 }

@@ -31,7 +31,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.WeatherWidget
-import com.blblblbl.myapplication.data.DBForecast
+import com.blblblbl.myapplication.data.db.DBForecast
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorageImpl
 import com.blblblbl.myapplication.ui.compose.theming.CustomTheme
 import com.blblblbl.myapplication.viewmodels.SearchViewModel
@@ -148,7 +148,7 @@ class SearchFragment : Fragment() {
 
     }
     private fun search(city:String, days:Int){
-        val dbForecast:DBForecast?
+        val dbForecast: DBForecast?
         runBlocking {
             dbForecast =viewModel.getForecast(city, days)
         }

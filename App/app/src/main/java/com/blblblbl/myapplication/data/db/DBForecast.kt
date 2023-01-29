@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.data
+package com.blblblbl.myapplication.data.db
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

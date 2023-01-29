@@ -1,7 +1,7 @@
-package com.blblblbl.myapplication.data
+package com.blblblbl.myapplication.data.db
 
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
+
 @Dao
 interface ForecastDao {
 

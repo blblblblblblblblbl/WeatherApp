@@ -1,8 +1,7 @@
 package com.blblblbl.myapplication.domain
 
-import com.blblblbl.myapplication.data.DBForecast
+import com.blblblbl.myapplication.data.db.DBForecast
 import com.blblblbl.myapplication.data.ForecastRepository
-import com.blblblbl.myapplication.data.ForecastRepositoryImpl
 import javax.inject.Inject
 
 class GetForecastSavedListUseCase @Inject constructor(

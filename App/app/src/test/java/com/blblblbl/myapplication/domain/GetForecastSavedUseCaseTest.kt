@@ -1,6 +1,6 @@
 package com.blblblbl.myapplication.domain
 
-import com.blblblbl.myapplication.data.DBForecast
+import com.blblblbl.myapplication.data.db.DBForecast
 import com.blblblbl.myapplication.data.ForecastRepository
 import com.example.example.Forecast
 import kotlinx.coroutines.runBlocking

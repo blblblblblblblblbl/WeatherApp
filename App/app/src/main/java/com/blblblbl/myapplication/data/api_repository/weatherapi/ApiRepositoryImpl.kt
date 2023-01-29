@@ -1,8 +1,7 @@
-package com.blblblbl.myapplication.data.api_repository
+package com.blblblbl.myapplication.data.api_repository.weatherapi
 
 import android.util.Log
-import com.blblblbl.myapplication.data.ForecastRepository
-import com.blblblbl.myapplication.data.ForecastRepositoryImpl
+import com.blblblbl.myapplication.data.api_repository.ApiRepository
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorageImpl
 import com.example.example.ForecastResponse
@@ -21,7 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class ApiRepositoryImpl @Inject constructor(
     private val persistentStorageImpl: PersistentStorage
-):ApiRepository {
+): ApiRepository {
     object RetrofitServices{
         private const val BASE_URL= "https://api.weatherapi.com/v1/"
         private val gson = GsonBuilder().setLenient().create()

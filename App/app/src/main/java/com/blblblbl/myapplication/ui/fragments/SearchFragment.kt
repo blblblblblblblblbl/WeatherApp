@@ -29,18 +29,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.blblblbl.myapplication.MyApp
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.WeatherWidget
 import com.blblblbl.myapplication.data.DBForecast
-import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorageImpl
 import com.blblblbl.myapplication.ui.compose.theming.CustomTheme
 import com.blblblbl.myapplication.viewmodels.SearchViewModel
 import com.murgupluoglu.flagkit.FlagKit
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.internal.Contexts
-import dagger.hilt.android.internal.Contexts.getApplication
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
 
@@ -58,14 +55,14 @@ class SearchFragment : Fragment() {
             setContent {
                 CustomTheme {
                     viewModel.ph.handlePermission()
-                    var textHint:String =viewModel.getLastSearch(PersistentStorage.LAST_SEARCH)?:""
+                    var textHint:String =viewModel.getLastSearch(PersistentStorageImpl.LAST_SEARCH)?:""
                     Column {
                         var text by remember { mutableStateOf("") }
                         val trailingIconView = @Composable {
                             IconButton(
                                 onClick = {
                                     if (text!="") {
-                                        viewModel.setLastSearch(PersistentStorage.LAST_SEARCH,text)
+                                        viewModel.setLastSearch(PersistentStorageImpl.LAST_SEARCH,text)
                                         search(text, 7)
                                     }
                                     else if (text=="" && textHint!=""){

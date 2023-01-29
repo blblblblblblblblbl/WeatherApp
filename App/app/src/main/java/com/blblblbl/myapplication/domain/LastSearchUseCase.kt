@@ -1,15 +1,15 @@
 package com.blblblbl.myapplication.domain
 
-import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorageImpl
 import javax.inject.Inject
 
 class LastSearchUseCase @Inject constructor(
-    private val persistentStorage: PersistentStorage
+    private val persistentStorageImpl: PersistentStorageImpl
 ) {
     fun get(name:String):String?{
-        return persistentStorage.getProperty(name)
+        return persistentStorageImpl.getProperty(name)
     }
     fun set(name:String,value:String){
-        persistentStorage.addProperty(name,value)
+        persistentStorageImpl.addProperty(name,value)
     }
 }

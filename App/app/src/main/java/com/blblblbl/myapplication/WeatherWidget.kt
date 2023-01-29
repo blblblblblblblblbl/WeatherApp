@@ -8,7 +8,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.RemoteViews
-import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorageImpl
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -52,8 +52,8 @@ internal fun updateAppWidget(
     views.setTextViewText(R.id.appwidget_text_temperature, "15oC")
     views.setTextViewText(R.id.appwidget_condition_text, "cloudy")
     views.setTextViewText(R.id.appwidget_condition_text, "updated")
-    val persistentStorage = PersistentStorage(context)
-    val forecastJson = persistentStorage.getProperty(PersistentStorage.CURRENT_WEATHER)
+    val persistentStorageImpl = PersistentStorageImpl(context)
+    val forecastJson = persistentStorageImpl.getProperty(PersistentStorageImpl.CURRENT_WEATHER)
     forecastJson?.let { forecastJson->
         val forecast = StorageConverter.forecastInfoFromJson(forecastJson)
         forecast?.let { forecast->

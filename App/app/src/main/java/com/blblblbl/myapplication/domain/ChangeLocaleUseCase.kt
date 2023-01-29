@@ -1,20 +1,19 @@
 package com.blblblbl.myapplication.domain
 
-import android.content.Context
+
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorageImpl
 import javax.inject.Inject
 
 
 class ChangeLocaleUseCase @Inject constructor(
-    private val persistentStorage: PersistentStorage,
-    @ApplicationContext private val context: Context
+    private val persistentStorage: PersistentStorage
 ){
-
+    //@Inject lateinit var persistentStorage: IPersistentStorage
     fun saveLocale(locale:String){
-        persistentStorage.addProperty(PersistentStorage.LANGUAGE_CODE,locale)
+        persistentStorage.addProperty(PersistentStorageImpl.LANGUAGE_CODE,locale)
     }
     fun getLocale():String?{
-        return persistentStorage.getProperty(PersistentStorage.LANGUAGE_CODE)
+        return persistentStorage.getProperty(PersistentStorageImpl.LANGUAGE_CODE)
     }
 }

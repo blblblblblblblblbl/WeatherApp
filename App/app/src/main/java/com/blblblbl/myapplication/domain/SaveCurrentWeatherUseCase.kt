@@ -1,13 +1,13 @@
 package com.blblblbl.myapplication.domain
 
-import com.blblblbl.myapplication.data.ForecastRepository
+import com.blblblbl.myapplication.data.ForecastRepositoryImpl
 import com.example.example.ForecastResponse
 import javax.inject.Inject
 
 class SaveCurrentWeatherUseCase @Inject constructor(
-    private val forecastRepository: ForecastRepository
+    private val forecastRepositoryImpl: ForecastRepositoryImpl
 ) {
     suspend fun saveCurrentWeather(forecastResponse: ForecastResponse){
-        forecastRepository.saveCurrent(forecastResponse)
+        forecastRepositoryImpl.saveCurrent(forecastResponse)
     }
 }

@@ -3,9 +3,8 @@ package com.blblblbl.myapplication.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.blblblbl.myapplication.data.DBForecast
+import com.blblblbl.myapplication.data.db.DBForecast
 import com.blblblbl.myapplication.domain.GetForecastSavedUseCase
-import com.example.example.Forecastday
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

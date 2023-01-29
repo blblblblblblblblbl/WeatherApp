@@ -1,9 +1,16 @@
-package com.blblblbl.myapplication.data
+package com.blblblbl.myapplication.data.api_repository
 
 import android.util.Log
+import com.blblblbl.myapplication.data.ForecastRepository
+import com.blblblbl.myapplication.data.ForecastRepositoryImpl
+import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorageImpl
 import com.example.example.ForecastResponse
 import com.google.gson.GsonBuilder
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -12,9 +19,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ApiRepository @Inject constructor(
-    private val persistentStorageImpl: PersistentStorageImpl
-) {
+class ApiRepositoryImpl @Inject constructor(
+    private val persistentStorageImpl: PersistentStorage
+):ApiRepository {
     object RetrofitServices{
         private const val BASE_URL= "https://api.weatherapi.com/v1/"
         private val gson = GsonBuilder().setLenient().create()
@@ -22,7 +29,7 @@ class ApiRepository @Inject constructor(
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-        val forecastApi:ForecastApi = retrofit.create(
+        val forecastApi: ForecastApi = retrofit.create(
             ForecastApi::class.java
         )
 
@@ -38,13 +45,13 @@ class ApiRepository @Inject constructor(
     }
 
 
-    suspend fun getForecast(city:String,days: Int):ForecastResponse {
+    override suspend fun getForecast(city:String, days: Int):ForecastResponse {
         Log.d("MyLog","weather request")
         val response = RetrofitServices.forecastApi.getForecast(API_KEY,city,days,"no","no")
         Log.d("MyLog","weather response:$response")
         return response
     }
-    suspend fun getCurrent(loc:String):ForecastResponse{
+    override suspend fun getCurrent(loc:String):ForecastResponse{
         Log.d("MyLog","weather request")
         val lang = persistentStorageImpl.getProperty(PersistentStorageImpl.LANGUAGE_CODE)?:"DEFAULT_LANGUAGE"
         val response = RetrofitServices.forecastApi.getCurrent(API_KEY,loc,"no",lang)
@@ -55,4 +62,10 @@ class ApiRepository @Inject constructor(
         const val DEFAULT_LANGUAGE = "en"
         const val API_KEY = "5f6574d1b7f94bd99d042815232501"
     }
+}
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class ApiRepositoryModule{
+    @Binds
+    abstract fun bindApiRepository(apiRepositoryImpl: ApiRepositoryImpl): ApiRepository
 }

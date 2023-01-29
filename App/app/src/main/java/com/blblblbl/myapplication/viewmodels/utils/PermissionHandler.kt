@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.domain
+package com.blblblbl.myapplication.viewmodels.utils
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf

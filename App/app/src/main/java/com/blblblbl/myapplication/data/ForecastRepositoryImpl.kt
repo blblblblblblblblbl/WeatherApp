@@ -1,5 +1,9 @@
 package com.blblblbl.myapplication.data
 
+import com.blblblbl.myapplication.data.api_repository.ApiRepository
+import com.blblblbl.myapplication.data.api_repository.ApiRepositoryImpl
+import com.blblblbl.myapplication.data.db.DBForecast
+import com.blblblbl.myapplication.data.db.DatabaseRepository
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorageImpl
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
@@ -15,14 +19,14 @@ import javax.inject.Singleton
 
 @Singleton
 class ForecastRepositoryImpl @Inject constructor(
-    private val apiRepository: ApiRepository,
+    private val apiRepositoryImpl: ApiRepository,
     private val databaseRepository: DatabaseRepository,
-    private val persistentStorageImpl: PersistentStorageImpl
+    private val persistentStorageImpl: PersistentStorage
 ):ForecastRepository {
 
-    override suspend fun getForecast(city:String, days: Int):DBForecast? {
+    override suspend fun getForecast(city:String, days: Int): DBForecast? {
         try {
-            val forecastResponse:ForecastResponse = apiRepository.getForecast(city,days)
+            val forecastResponse:ForecastResponse = apiRepositoryImpl.getForecast(city,days)
             forecastResponse?.let {
                 val dbForecast = DBForecast(forecastResponse.location!!.name!!,
                     forecastResponse.location!!.localtime!!,
@@ -37,7 +41,7 @@ class ForecastRepositoryImpl @Inject constructor(
         return forecastFromDB?:null
     }
     override suspend fun getCurrent(loc:String):ForecastResponse{
-        return apiRepository.getCurrent(loc)
+        return apiRepositoryImpl.getCurrent(loc)
     }
     override suspend fun getCurrentSaved():ForecastResponse?{
         val json = persistentStorageImpl.getProperty(PersistentStorageImpl.CURRENT_WEATHER)

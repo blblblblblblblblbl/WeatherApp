@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.blblblbl.myapplication.data.DBForecast
+import com.blblblbl.myapplication.data.db.DBForecast
 import com.blblblbl.myapplication.ui.compose.theming.CustomTheme
 import com.blblblbl.myapplication.viewmodels.WeatherViewModel
 import com.example.example.Forecastday

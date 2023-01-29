@@ -1,7 +1,8 @@
-package com.blblblbl.myapplication.data.util
+package com.blblblbl.myapplication.data.db
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
+import com.blblblbl.myapplication.data.util.JsonParser
 import com.example.example.Forecast
 
 @ProvidedTypeConverter
